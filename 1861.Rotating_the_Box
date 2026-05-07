@@ -1,0 +1,30 @@
+# question - https://leetcode.com/problems/rotating-the-box/description/
+
+class Solution:
+    def rotateTheBox(self, boxGrid: List[List[str]]) -> List[List[str]]:
+        m = len(boxGrid)
+        n = len(boxGrid[0])
+        result = [["" for _ in range(m)] for _ in range(n)]
+        #for Transpose
+        for i in range(n):
+            for j in range(m):
+                result[i][j] = boxGrid[j][i]
+        # For reverse the Transpose
+        for i in range(n):
+            result[i].reverse()
+        # Apply gravity by column
+        for j in range(m):
+            for i in range(n -1, -1, -1):
+                if result[i][j] == ".":
+                    next_row_with_stone = -1
+                    #Look for a stone above
+                    for k in range(i-1, -1, -1):
+                        if result[k][j] == "*":
+                            break
+                        if result[k][j] == "#":
+                            next_row_with_stone = k
+                    
+                    if next_row_with_stone != -1:
+                        result[i][j] = "#"
+                        result[next_row_with_stone][j] = "."
+        return result
